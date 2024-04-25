@@ -1,4 +1,26 @@
+"use client";
+
+import { useState } from "react";
+import { Resend } from "resend";
+
 export default function Newsletter() {
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSendMail = async (e: any) => {
+    e.preventDefault();
+    // const mailto = `mailto:support@deji-yuki.com?subject=${subject}&body=${content}`;
+    // window.location.href = mailto;
+    const resend = new Resend("re_Z4Zsm6uY_FKgCrygkTKb2xq8fVB5Cruec");
+
+    resend.emails.send({
+      from: "test@gmail.com",
+      to: "support@deji-yuki.com",
+      subject,
+      html: content,
+    });
+  };
+
   return (
     <section>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -30,14 +52,62 @@ export default function Newsletter() {
                 </defs>
                 <g fill="none" fillRule="evenodd">
                   <g fill="#FFF">
-                    <ellipse fillOpacity=".04" cx="185" cy="15.576" rx="16" ry="15.576" />
-                    <ellipse fillOpacity=".24" cx="100" cy="68.402" rx="24" ry="23.364" />
-                    <ellipse fillOpacity=".12" cx="29" cy="251.231" rx="29" ry="28.231" />
-                    <ellipse fillOpacity=".64" cx="29" cy="251.231" rx="8" ry="7.788" />
-                    <ellipse fillOpacity=".12" cx="342" cy="31.303" rx="8" ry="7.788" />
-                    <ellipse fillOpacity=".48" cx="62" cy="126.811" rx="2" ry="1.947" />
-                    <ellipse fillOpacity=".12" cx="78" cy="7.072" rx="2" ry="1.947" />
-                    <ellipse fillOpacity=".64" cx="185" cy="15.576" rx="6" ry="5.841" />
+                    <ellipse
+                      fillOpacity=".04"
+                      cx="185"
+                      cy="15.576"
+                      rx="16"
+                      ry="15.576"
+                    />
+                    <ellipse
+                      fillOpacity=".24"
+                      cx="100"
+                      cy="68.402"
+                      rx="24"
+                      ry="23.364"
+                    />
+                    <ellipse
+                      fillOpacity=".12"
+                      cx="29"
+                      cy="251.231"
+                      rx="29"
+                      ry="28.231"
+                    />
+                    <ellipse
+                      fillOpacity=".64"
+                      cx="29"
+                      cy="251.231"
+                      rx="8"
+                      ry="7.788"
+                    />
+                    <ellipse
+                      fillOpacity=".12"
+                      cx="342"
+                      cy="31.303"
+                      rx="8"
+                      ry="7.788"
+                    />
+                    <ellipse
+                      fillOpacity=".48"
+                      cx="62"
+                      cy="126.811"
+                      rx="2"
+                      ry="1.947"
+                    />
+                    <ellipse
+                      fillOpacity=".12"
+                      cx="78"
+                      cy="7.072"
+                      rx="2"
+                      ry="1.947"
+                    />
+                    <ellipse
+                      fillOpacity=".64"
+                      cx="185"
+                      cy="15.576"
+                      rx="6"
+                      ry="5.841"
+                    />
                   </g>
                   <circle fill="url(#ni-a)" cx="276" cy="237" r="200" />
                 </g>
@@ -54,7 +124,7 @@ export default function Newsletter() {
 
                 {/* CTA form */}
                 <form className="w-full lg:w-auto">
-                  <div>
+                  <div className="mb-2">
                     <label
                       htmlFor="subject"
                       className="block text-sm font-medium leading-6 text-white"
@@ -66,7 +136,8 @@ export default function Newsletter() {
                         <input
                           type="text"
                           name="subject"
-                          id="subject"
+                          value={subject}
+                          onChange={(e) => setSubject(e.target.value)}
                           autoComplete="subject"
                           className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         />
@@ -77,28 +148,34 @@ export default function Newsletter() {
                   <div className="col-span-full mb-6">
                     <label
                       htmlFor="content"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-white"
                     >
                       お問い合わせ内容
                     </label>
                     <div className="mt-2">
                       <textarea
-                        id="content"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
                         name="content"
                         rows={3}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        defaultValue={""}
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row justify-center max-w-xs mx-auto sm:max-w-md lg:mx-0">
-                    <a className="btn text-white bg-blue-600 hover:bg-blue-700 shadow" href="#0">
+                  <div className="flex flex-col sm:flex-row justify-start max-w-xs mx-auto sm:max-w-md lg:mx-0">
+                    <a
+                      className="btn text-white bg-blue-600 hover:bg-blue-700 shadow"
+                      href="#0"
+                      onClick={handleSendMail}
+                    >
                       メールを送る
                     </a>
                   </div>
                   {/* Success message */}
                   {/* <p className="text-sm text-gray-400 mt-3">Thanks for subscribing!</p> */}
-                  <p className="text-sm text-gray-400 mt-3">お気軽にお問い合わせてください</p>
+                  <p className="text-sm text-gray-400 mt-3">
+                    お気軽にお問い合わせてください
+                  </p>
                 </form>
               </div>
             </div>
