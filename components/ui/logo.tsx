@@ -5,7 +5,7 @@ import LogoImg from '@/public/images/logo.png';
 export default function Logo() {
   return (
     <Link href="/" className="block m-1" aria-label="Cruip">
-      <Image src={LogoImg} alt="Cruip" height={48} />
+      <Image src={LogoImg} alt="Cruip" height={30} />
     </Link>
   )
 }

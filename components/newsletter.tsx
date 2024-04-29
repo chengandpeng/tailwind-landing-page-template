@@ -1,7 +1,7 @@
 "use client";
-
+import axios from "axios";
 import { useState } from "react";
-import { Resend } from "resend";
+// import { postmarkClient } from "@/util/postmark";
 
 export default function Newsletter() {
   const [subject, setSubject] = useState("");
@@ -9,16 +9,19 @@ export default function Newsletter() {
 
   const handleSendMail = async (e: any) => {
     e.preventDefault();
-    // const mailto = `mailto:support@deji-yuki.com?subject=${subject}&body=${content}`;
-    // window.location.href = mailto;
-    const resend = new Resend("re_Z4Zsm6uY_FKgCrygkTKb2xq8fVB5Cruec");
 
-    resend.emails.send({
-      from: "test@gmail.com",
-      to: "support@deji-yuki.com",
-      subject,
-      html: content,
-    });
+    try {
+      const res = await axios.post("/api/postmark", {
+        subject,
+        content,
+      });
+      if (res?.status === 200) {
+        setSubject("");
+        setContent("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -129,10 +132,10 @@ export default function Newsletter() {
                       htmlFor="subject"
                       className="block text-sm font-medium leading-6 text-white"
                     >
-                      件名
+                      メールアドレス
                     </label>
                     <div className="mt-2">
-                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <div className="flex rÏounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         <input
                           type="text"
                           name="subject"
@@ -140,6 +143,7 @@ export default function Newsletter() {
                           onChange={(e) => setSubject(e.target.value)}
                           autoComplete="subject"
                           className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          required
                         />
                       </div>
                     </div>
@@ -159,18 +163,21 @@ export default function Newsletter() {
                         name="content"
                         rows={3}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        required
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row justify-start max-w-xs mx-auto sm:max-w-md lg:mx-0">
+                  <button
+                    className="flex flex-col sm:flex-row justify-start max-w-xs mx-auto sm:max-w-md lg:mx-0 "
+                    onClick={handleSendMail}
+                  >
                     <a
                       className="btn text-white bg-blue-600 hover:bg-blue-700 shadow"
                       href="#0"
-                      onClick={handleSendMail}
                     >
                       メールを送る
                     </a>
-                  </div>
+                  </button>
                   {/* Success message */}
                   {/* <p className="text-sm text-gray-400 mt-3">Thanks for subscribing!</p> */}
                   <p className="text-sm text-gray-400 mt-3">
